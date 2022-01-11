@@ -1,3 +1,4 @@
+1)
 My goal for the final project is to pull information from a backend and display it while giving
 users the ability to interact with the backend. This likely will take the form of a shopping app
 where the user will search the website, which will then display and image of the item along with
