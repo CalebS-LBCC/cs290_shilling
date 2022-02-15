@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <!-- I don't know if this was discussed in class or not, but buttons are
+            really cool!
+            https://www.w3schools.com/tags/tag_button.asp-->
+        <button onclick="pushNumb(7)">7</button> 
+        <button onclick="pushNumb(8)">8</button> 
+        <button onclick="pushNumb(9)">9</button> 
+        <br>
+        <button onclick="pushNumb(4)">4</button> 
+        <button onclick="pushNumb(5)">5</button> 
+        <button onclick="pushNumb(6)">6</button>
+        <br>
+        <button onclick="pushNumb(1)">1</button> 
+        <button onclick="pushNumb(2)">2</button> 
+        <button onclick="pushNumb(3)">3</button>
+        <br>
+        <button onclick="pushNumb(0)">0</button>
+        <br><br>
+        
+        <button onclick="setOp('Addition')">+</button>
+        <button onclick="setOp('Subtraction')">-</button>
+        <button onclick="setOp('Multiplication')">*</button>
+        <button onclick="setOp('Division')">/</button>
+        <button onclick="equals()">=</button>
+        <br>
+        <button onclick="setOp('Sine')">sin</button>
+        <button onclick="setOp('Cosine')">cos</button>
+        <br><br>
+        <button id="mode" onclick="mode()">Degrees</button>
+        <button onclick="clearCalc()">clear</button>
+        <p id="out">0</p>
+
+        <script>
+            // Common error: placing script below HTML code allows stuff to be loaded first up above
+
+            // Write out developer information into the console
+            const info = {author:"Caleb Shilling", last_update:"2-14-2022", organization:"LBCC"}
+            console.log("Written by " + info.author)
+            console.log("Last Updated " + info.last_update)
+            console.log("Written for " + info.organization)
+
+            // Trigger to handle extra behavior if the calculator hasn't been used
+            // or has been cleared reciently
+            let solved_trigger = 0;
+            
+            // Buffer to store the current number
+            let working_buf = []
+
+            // Variable to store the last computed value
+            let old_val = 0
+
+            // Variable to store selected operation
+            let op = 0
+
+            // Stores if the calculator is in degrees or radians
+            let radians = false
+
+            const mode_change = document.getElementById("mode")
+            const output = document.getElementById("out")
+
+            // Adds a number to the buffer
+            function pushNumb(value){
+                working_buf.push(value)
+            }
+
+            // Sets if the calculator is in degrees or radians
+            // and changes the button text accordingly
+            function mode(){
+                radians = !radians
+                if(radians){
+                    mode_change.innerText = "Radians"
+                }else{
+                    mode_change.innerText = "Degrees"
+                }
+            }
+
+            // Clears the calculator and resets associated triggers
+            function clearCalc(){
+                solved_trigger = 0;
+                old_val = 0;
+                output.innerText = old_val
+            }
+
+            function getValFromBuf(buffer){
+                let val = 0
+                let len = buffer.length
+                for(let i = 0; i < len; i++){
+                    // Shift the front value off and add it to the total value
+                    // times the value of that number's position.
+                    let place = buffer.shift()
+                    val = val + place * Math.pow(10, len-i-1)
+                }
+                return val
+            }
+
+            function setOp(operation){
+                op = operation;
+                if(solved_trigger == 0){
+                    // If nothing has been calculated, move 
+                    // the current value directly into old_val
+                    old_val = getValFromBuf(working_buf)
+                    console.log(old_val)
+                    output.innerText = old_val
+                    solved_trigger = 1;
+                }else{
+                    solve()     
+                }
+            }
+
+            function solve(){
+
+                if(op == "none"){
+                    return
+                }
+
+                let current_val = getValFromBuf(working_buf)
+
+                if(solved_trigger == 0){
+                    solved_trigger = 1;
+                    old_val = current_val;
+                    console.log(old_val)
+                    output.innerText = old_val
+                    return
+                }
+                conv = 0
+                // Case statement used to switch between string representations of
+                // implemented mathmatical function names.
+                switch(op){
+                    case "Addition":
+                        old_val = old_val + current_val
+                    break;
+
+                    case "Subtraction":
+                        old_val = old_val - current_val
+                    break;
+
+                    case "Multiplication":
+                        old_val = old_val * current_val
+                    break;
+
+                    case "Division":
+                        old_val = old_val / current_val
+
+                    // Interesting error: defining conv in both sine and cosine results in
+                    // conv being redefined in cosine. Conv must be defined earlier in this
+                    // function to avoid the error. 
+                    case "Sine":
+                        conv = (radians ? 1 : 180/Math.PI)
+                        old_val = Math.sin(old_val*conv)
+                    break;
+
+                    case "Cosine":
+                        conv = (radians ? 1 : 180/Math.PI)
+                        old_val = Math.cos(old_val*conv)
+                    break;
+
+                    default:
+                    break;
+                }
+
+                console.log(old_val)
+                output.innerText = old_val
+                op = "none"
+            }
+
+            // When the equals function is clicked, solve using the value currently
+            // in the buffer, reset the solved trigger.
+            function equals(){  
+                solve()
+                solved_trigger = 0;
+            }
+        </script>
+    </body>
+</html>
