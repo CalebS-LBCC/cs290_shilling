@@ -1,0 +1,19 @@
+
+<h1 style="text-align:center">Dictionary</h1>
+
+<form style="text-align:center" action="/look" method="post" novalidate>
+    <!-- Place the searchbar where the user will enter the word. -->
+    <p>
+        {{form.searchbar.label}}<br>
+        {{form.searchbar(size=32)}}
+    </p>
+
+    <!-- PLace the search button. -->
+    <p style="text-align:center">{{form.submit()}}</p>
+    <br>
+
+    <!-- If there are words stored in the form, print them. -->
+    {% for word in words %}
+        <p style="text-align:center">{{word}}</p>
+    {% endfor %}
+</form>
