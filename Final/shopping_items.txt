@@ -1,0 +1,10 @@
+Not Cool Item
+10.99
+Not Super Cool Item
+299.99
+Moderately Cool Item
+1099.99
+Pretty Cool Item
+599.99
+Radical Item
+659.99

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+    </head>
+    <body>
+
+        <div style="display:none;">
+            {% for item in items %}
+            <a name="item">{{item}}</a>
+            {% endfor %}
+            {% for price in prices %}
+            <a name="price">{{price}}</a>
+            {% endfor %}
+        </div>
+
+        <br><br><br><br><br><br><br>
+
+        <template>
+            <!-- Structure for an item -->
+            <div class="results" style="margin-right:auto; margin-left:10px;">
+                <img name="clone_img" src="{{url_for('static', filename='download.jpg')}}" class="results_img">
+                <div style="float:left; padding-left:30px;">
+                    <br>
+                    <a name="clone_name" class="results_txt">No Name</a>
+                    <br><br>
+                    <a class="results_txt">Price:</a>
+                    <a name="clone_price" class="results_txt" style="font-size:larger">No Price</a>
+                </div>
+                <form class="add_to_cart" action="/add" method="post">
+                    <button name="clone_link" class="results_txt" value="Add To Cart">Add to Cart</a>
+                </form>
+            </div>
+            <br>
+        </template>
+        
+        <div class="top_bar">
+            <h1 class="top_bar_text">Shopping Example</h1>
+            <h3 class="top_bar_text" style="text-align:right">Cart ({{cart_size}})</h3>
+        </div>
+
+    </body>
+</html>
